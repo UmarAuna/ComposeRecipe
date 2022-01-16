@@ -31,7 +31,7 @@ class RecipeListFragment : Fragment() {
                     itemsIndexed(
                         items = recipes
                     ) { index, recipe ->
-                        RecipeCard(recipe = recipe, onClick = {} )
+                        RecipeCard(recipe = recipe, onClick = {})
                     }
                 }
             }
