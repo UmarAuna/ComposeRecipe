@@ -50,6 +50,7 @@ class RecipeListFragment : Fragment() {
                 val recipes = viewModel.recipes.value
                 val query = viewModel.query.value
                 val keyboardController = LocalSoftwareKeyboardController.current
+                val selectedCategory = viewModel.selectedCategory.value
 
                 Column {
                     Surface(
@@ -81,7 +82,7 @@ class RecipeListFragment : Fragment() {
                                     },
                                     keyboardActions = KeyboardActions(
                                         onSearch = {
-                                            viewModel.newSearch(query)
+                                            viewModel.newSearch()
                                             keyboardController?.hide()
                                         }
                                     ),
@@ -95,15 +96,16 @@ class RecipeListFragment : Fragment() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .horizontalScroll(rememberScrollState())
-
+                                    .padding(start = 8.dp, bottom = 8.dp)
                             ) {
                                 for (category in getAllFoodCategories()) {
                                     FoodCategoryChip(
                                         category = category.value,
-                                        onExecuteSearch = {
-                                            viewModel.onQueryChanged(it)
-                                            viewModel.newSearch(it)
-                                        }
+                                        isSelected = selectedCategory == category,
+                                        onSelectedCategory = {
+                                            viewModel.onSelectedCategoryChanged(it)
+                                        },
+                                        onExecuteSearch = viewModel::newSearch,
                                     )
                                 }
                             }
