@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.recipe.composerecipe.presentation.ui.recipeList.FoodCategory
-import com.recipe.composerecipe.presentation.ui.recipeList.getAllFoodCategories
 
 @ExperimentalComposeUiApi
 @Composable
@@ -30,6 +29,7 @@ fun SearchAppBar(
     query: String,
     onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit,
+    categories: List<FoodCategory>,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
     onToggleTheme: () -> Unit,
@@ -95,7 +95,7 @@ fun SearchAppBar(
                     .horizontalScroll(rememberScrollState())
                     .padding(start = 8.dp, bottom = 8.dp),
             ) {
-                for (category in getAllFoodCategories()) {
+                for (category in categories) {
                     FoodCategoryChip(
                         category = category.value,
                         isSelected = selectedCategory == category,
