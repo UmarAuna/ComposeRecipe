@@ -62,6 +62,7 @@ class RecipeListFragment : Fragment() {
                     // val keyboardController = LocalSoftwareKeyboardController.current
                     val selectedCategory = viewModel.selectedCategory.value
                     val loading = viewModel.loading.value
+                    val page = viewModel.page.value
                     val scaffoldState = rememberScaffoldState()
 
                     Scaffold(
@@ -110,13 +111,23 @@ class RecipeListFragment : Fragment() {
 
                         ) {
                             // Spacer(modifier = Modifier.padding(10.dp))
-                            LazyColumn {
-                                itemsIndexed(
-                                    items = recipes
-                                ) { index, recipe ->
-                                    RecipeCard(recipe = recipe, onClick = {})
+                            if (loading && recipes.isEmpty()) {
+                                CircularIndeterminateProgressBar(isDisplayed = true)
+                            } else {
+                                LazyColumn {
+                                    itemsIndexed(
+                                        items = recipes
+                                    ) { index, recipe ->
+                                        viewModel.onChangeRecipeScrollPosition(index)
+                                        // additional check to make sure we dont get duplicate entries or duplicate request
+                                        if(index + 1 >= (page * PAGE_SIZE) && !loading){
+                                            viewModel.nextPage()
+                                        }
+                                        RecipeCard(recipe = recipe, onClick = {})
+                                    }
                                 }
                             }
+
                             CircularIndeterminateProgressBar(isDisplayed = loading,)
                             DefaultSnackbar(
                                 snackbarHostState = scaffoldState.snackbarHostState,
@@ -175,6 +186,18 @@ fun MyDrawer() {
 
 @Composable
 fun SurfaceViewRecipeList() {
+}
+
+@Preview(locale = "en", showBackground = true)
+/*@Preview(locale = "ru", showBackground = true)
+@Preview(locale = "ar", showBackground = true)*/
+@Composable
+fun HaHa() {
+    Column {
+        repeat(3) {
+            Text(text = "👻 Hello 👻")
+        }
+    }
 }
 
 @Preview(showBackground = true)
