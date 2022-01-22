@@ -1,7 +1,12 @@
 package com.recipe.composerecipe.network.model
 
+import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Keep
+@Parcelize
 data class RecipeDto(
     @SerializedName("pk")
     val pk: Int? = null,
@@ -26,4 +31,4 @@ data class RecipeDto(
     @SerializedName("date_updated")
     val dateUpdated: String? = null,
 
-)
+) : Parcelable
