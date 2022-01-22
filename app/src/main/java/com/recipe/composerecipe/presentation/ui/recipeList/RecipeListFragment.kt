@@ -80,7 +80,8 @@ class RecipeListFragment : Fragment() {
                                             )
                                         }
                                     } else {
-                                        viewModel.newSearch()
+                                        // viewModel.newSearch()
+                                        viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent)
                                     }
                                 },
                                 categories = getAllFoodCategories(),
@@ -121,7 +122,8 @@ class RecipeListFragment : Fragment() {
                                         viewModel.onChangeRecipeScrollPosition(index)
                                         // additional check to make sure we dont get duplicate entries or duplicate request
                                         if(index + 1 >= (page * PAGE_SIZE) && !loading){
-                                            viewModel.nextPage()
+                                            viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
+                                            // viewModel.nextPage()
                                         }
                                         RecipeCard(recipe = recipe, onClick = {})
                                     }
