@@ -121,7 +121,7 @@ class RecipeListFragment : Fragment() {
                                     ) { index, recipe ->
                                         viewModel.onChangeRecipeScrollPosition(index)
                                         // additional check to make sure we dont get duplicate entries or duplicate request
-                                        if(index + 1 >= (page * PAGE_SIZE) && !loading){
+                                        if (index + 1 >= (page * PAGE_SIZE) && !loading) {
                                             viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                                             // viewModel.nextPage()
                                         }
