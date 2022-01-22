@@ -17,7 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.recipe.composerecipe.presentation.ui.recipe.RecipeEvent.GetRecipeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -28,6 +30,8 @@ import kotlinx.coroutines.launch
 class RecipeFragment : Fragment() {
     private val args: RecipeFragmentArgs by navArgs()
 
+    private val viewModel: RecipeViewModel by viewModels()
+
     private var recideId: MutableState<Int> = mutableStateOf(-1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +40,8 @@ class RecipeFragment : Fragment() {
             delay(1000)
             arguments?.getInt("recipeId")?.let { rId ->
                 // recideId.value = rId
-                recideId.value = args.recipeId
+                // recideId.value = args.recipeId
+                viewModel.onTriggerEvent(GetRecipeEvent(rId))
             }
         }
     }
@@ -55,9 +60,14 @@ class RecipeFragment : Fragment() {
 
     @Composable
     fun SurfaceViewRecipe() {
+        val loading = viewModel.loading.value
+        val recipe = viewModel.recipe.value
+
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = if (recideId.value != -1) "Selected recipeId: ${recideId.value}" else "Loading...",
+                text = recipe?.let {
+                    "Selected recipeId: ${recipe.title}"
+                } ?: "Loading...",
                 style = TextStyle(
                     fontSize = 21.sp
                 )
