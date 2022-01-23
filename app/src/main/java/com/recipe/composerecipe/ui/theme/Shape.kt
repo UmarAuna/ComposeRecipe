@@ -9,3 +9,9 @@ val Shapes = Shapes(
     medium = RoundedCornerShape(4.dp),
     large = RoundedCornerShape(0.dp)
 )
+
+val AppShapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(8.dp)
+)

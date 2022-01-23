@@ -1,8 +1,10 @@
 package com.recipe.composerecipe.domain
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
+@Keep
 @Parcelize
 data class Recipe(
     val id: Int? = null,
