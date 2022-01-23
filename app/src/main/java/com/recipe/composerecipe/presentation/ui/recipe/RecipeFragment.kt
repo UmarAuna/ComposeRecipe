@@ -12,7 +12,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,8 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.recipe.composerecipe.presentation.BaseApplication
-import com.recipe.composerecipe.presentation.components.CircularIndeterminateProgressBar
-import com.recipe.composerecipe.presentation.components.DefaultSnackbar
 import com.recipe.composerecipe.presentation.components.RecipeView
 import com.recipe.composerecipe.presentation.ui.recipe.RecipeEvent.GetRecipeEvent
 import com.recipe.composerecipe.ui.theme.ComposeRecipeTheme
@@ -48,6 +45,7 @@ class RecipeFragment : Fragment() {
 
     private var recideId: MutableState<Int> = mutableStateOf(-1)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CoroutineScope(Main).launch {
@@ -67,7 +65,14 @@ class RecipeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                ComposeRecipeTheme(darkTheme = application.isDark.value) {
+                val loading = viewModel.loading.value
+                val scaffoldState = rememberScaffoldState()
+                ComposeRecipeTheme(
+                    darkTheme = application.isDark.value,
+                    displayProgressBar = loading,
+                    scaffoldState = scaffoldState
+
+                ) {
                     SurfaceViewRecipe()
                 }
             }
@@ -101,14 +106,6 @@ class RecipeFragment : Fragment() {
                         }
                     }
                 }
-                CircularIndeterminateProgressBar(isDisplayed = loading)
-                DefaultSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    onDismiss = {
-                        scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                    },
-                    modifier = Modifier.align(Alignment.BottomCenter)
-                )
             }
         }
     }
@@ -116,7 +113,12 @@ class RecipeFragment : Fragment() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreviewRecipe() {
-        ComposeRecipeTheme() {
+        val loading = viewModel.loading.value
+        val scaffoldState = rememberScaffoldState()
+        ComposeRecipeTheme(
+            displayProgressBar = loading,
+            scaffoldState = scaffoldState
+        ) {
             SurfaceViewRecipe()
         }
     }
