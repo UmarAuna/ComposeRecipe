@@ -55,9 +55,9 @@ fun RecipeList(
                         recipe = recipe,
                         onClick = {
                             if (recipe.id != null) {
-                               // val bundle = Bundle()
-                               // bundle.putInt("recipeId", recipe.id)
-                               // navController.navigate(R.id.viewRecipe, bundle)
+                                // val bundle = Bundle()
+                                // bundle.putInt("recipeId", recipe.id)
+                                // navController.navigate(R.id.viewRecipe, bundle)
                                 navController.navigate(RecipeListFragmentDirections.viewRecipe(recipe.id))
                             } else {
                                 snackbarController.getScope().launch {
